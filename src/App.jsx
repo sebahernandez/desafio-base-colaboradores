@@ -7,12 +7,12 @@ import { Buscador } from "./components/Buscador";
 import { v4 as uuidv4 } from "uuid";
 
 function App() {
-  const [registros, setRegistros] = useState(BaseColaboradores);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [registros, setRegistros] = useState(BaseColaboradores);
   const [registrosFiltrados, setRegistrosFiltrados] =
     useState(BaseColaboradores);
+  const [clearRows, setClearRows] = useState(false);
 
-  console.log(registros);
   const agregarRegistro = (registro) => {
     const nuevoRegistro = { ...registro, id: uuidv4() };
     const nuevosRegistros = [...registros, nuevoRegistro];
@@ -22,6 +22,9 @@ function App() {
 
   const handleRowSelected = (state) => {
     setSelectedRows(state.selectedRows);
+    if (clearRows) {
+      setClearRows(false);
+    }
   };
 
   const eliminarProductos = (id) => {
@@ -29,17 +32,18 @@ function App() {
       const nuevosRegistros = registros.filter(
         (registro) => registro.id !== id
       );
-      setRegistros(nuevosRegistros);
       setRegistrosFiltrados(nuevosRegistros);
     } else {
-      const idsSeleccionados = new Set(selectedRows.map((row) => row.id));
-      console.log(idsSeleccionados);
+      let idsSeleccionados = new Set(selectedRows.map((row) => row.id));
+
       const nuevosRegistros = registros.filter(
         (registro) => !idsSeleccionados.has(registro.id)
       );
-      setRegistros(nuevosRegistros);
+
+      setRegistros(nuevosRegistros); // Asegúrate de también actualizar el estado de `registros` si es necesario
       setRegistrosFiltrados(nuevosRegistros);
-      setSelectedRows([]);
+      setSelectedRows([]); // Limpia las filas seleccionadas
+      setClearRows(true);
     }
   };
 
@@ -69,6 +73,7 @@ function App() {
             registros={registrosFiltrados}
             onRowSelected={handleRowSelected}
             eliminarProductos={eliminarProductos}
+            clearRows={clearRows}
           />
           <button
             className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-600 focus:ring-opacity-50"

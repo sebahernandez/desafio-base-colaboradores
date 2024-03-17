@@ -43,8 +43,6 @@ export const Formulario = (props) => {
         setMensaje("");
         setVariant("");
       }, 1500);
-
-      console.log(inputValues);
     }
   };
 

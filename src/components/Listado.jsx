@@ -1,8 +1,12 @@
 import DataTable from "react-data-table-component";
 import PropTypes from "prop-types";
 import { Trash } from "./Trash";
-export const Listado = ({ registros, onRowSelected, eliminarProductos }) => {
-  console.log(registros);
+export const Listado = ({
+  registros,
+  onRowSelected,
+  eliminarProductos,
+  clearRows,
+}) => {
   const columns = [
     {
       name: "ID",
@@ -54,6 +58,7 @@ export const Listado = ({ registros, onRowSelected, eliminarProductos }) => {
         data={registros}
         selectableRows
         onSelectedRowsChange={onRowSelected}
+        clearSelectedRows={clearRows}
         pagination
       />
     </div>
@@ -64,4 +69,5 @@ Listado.propTypes = {
   registros: PropTypes.array.isRequired,
   onRowSelected: PropTypes.func.isRequired,
   eliminarProductos: PropTypes.func.isRequired,
+  clearRows: PropTypes.bool.isRequired,
 };
